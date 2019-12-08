@@ -5,38 +5,25 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
-	<title>Code!</title>
+	<title>2D noise</title>
 
 	<script src="libraries/p5.js"></script>
 	<script src="libraries/p5.dom.js"></script>
 	<!-- <script src="libraries/p5.sound.js"></script> -->
+	<script src="libraries/HSB.js"></script>
 	<script src="sketch.js"></script>
+	<script src="particle.js"></script>
 
 	<style>
 		body {
-			background-color: #303030;
-			color: #d0d;
+			margin:0;
+			padding:0;
+			overflow: hidden;
 		}
-
-		/*body {
-			margin: 0px;
+		canvas {
+			margin:auto;
 		}
-		
-		for full screen canvas
-
-		::-webkit-scrollbar { 
-    	display: none; 
-		}*/
 	</style>
-
-	<script type="text/javascript">
-		Object.prototype.keys = function() {
-			return Object.keys(this);
-		};
-		function sleep(ms) {
-		 return new Promise(resolve => setTimeout(resolve, ms));
-		}
-	</script>
 </head>
 <body>
 </body>
