@@ -11,17 +11,14 @@ let col_noise = [];
 
 let picture; // if drawing picture
 
+let particleNum = 300;
+let transparency = 100;
+
 function preload() {
-	picture = loadImage('pic.png'); // if drawing picture
-	// picture = loadImage('black.png'); // if drawing picture
+	picture = loadImage('garden of the gods.jpg'); // if drawing picture
 }
 
-function setup() {
-	createCanvas(windowWidth, windowHeight);
-
-	cols = floor(width / scl);
-	rows = floor(height / scl);
-
+function reset() {
 	// if drawing colors
 	// pixelDensity(1);
 	// loadPixels();
@@ -31,17 +28,42 @@ function setup() {
 	// if drawing pic
 	// pixelDensity(1);
 	// loadPixels();
-	calcPictureColors();
 	// updatePixels();
+
+	if (chooseSetting) {
+		switch (chooseSetting.value()) {
+			case 'reveal picture':
+				calcPictureColors();
+				break;
+			case 'reveal perlin noise colours':
+				calcPerlinColors();
+				break;
+		}
+	} else {
+		calcPictureColors();
+	}
 
 
 	// background(50);
-	// background('#d8f8ff');
-	background('#000');
+	background('#d8f8ff');
+	// background('#000');
 
-	for (let i = 0; i < 3000; i++) { // if drawing particles
+	// for (let i = 0; i < 3000; i++) { // if drawing particles
+	particles = [];
+	for (let i = 0; i < particleNum; i++) { // if drawing particles
 		particles[i] = new Particle();
 	}
+}
+
+function setup() {
+	createCanvas(windowWidth, windowHeight);
+
+	cols = floor(width / scl);
+	rows = floor(height / scl);
+
+	reset();
+
+	createDom();
 }
 
 function draw() {
@@ -87,7 +109,9 @@ function calcPerlinColors() {
 		for (let x = 0; x <= width; x++) {
 			let index = (x + y * width);
 
-			let num = noise(x * inc / 10, y * inc / 10) * TWO_PI * 4;
+			// perlin intensity will be between 0-1
+			let num = noise(x * inc * perlinIntensity,
+				y * inc * perlinIntensity) * TWO_PI * 4;
 			let angle = p5.Vector.fromAngle(num);
 			angle.setMag(1);
 

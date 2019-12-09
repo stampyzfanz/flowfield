@@ -35,16 +35,19 @@ class Particle {
 		// point(this.pos.x, this.pos.y);
 
 		// Pics or stuff
-		try {
-			let index = Math.floor(this.pos.x) + Math.floor(this.pos.y) * width;
+		if (!isPainting) {
+			try {
+				let index = Math.floor(this.pos.x) + Math.floor(this.pos.y) * width;
 
-			let col = col_noise[index];
-			// console.log(col);
+				let col = col_noise[index];
+				// console.log(col);
 
-			if (typeof col !== 'object') throw 'err';
+				if (typeof col !== 'object') throw 'err';
 
-			stroke(col[0], col[1], col[2], 10);
-		} catch (err) {}
+				// stroke(col[0], col[1], col[2], 10);
+				stroke(col[0], col[1], col[2], transparency);
+			} catch (err) {}
+		}
 
 		let prevpos = {
 			'x': this.pos.x - this.vel.x,

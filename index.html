@@ -13,18 +13,29 @@
 	<script src="libraries/HSB.js"></script>
 	<script src="sketch.js"></script>
 	<script src="particle.js"></script>
+	<script src="dom.js"></script>
 
 	<style>
 		body {
 			margin:0;
 			padding:0;
-			overflow: hidden;
+			/*overflow: hidden;*/
 		}
+
+		input, p, button  {
+			font-size: 2em;
+		}
+
 		canvas {
 			margin:auto;
 		}
 	</style>
 </head>
 <body>
+	<script type="text/javascript">
+		function sleep(ms) {
+			return new Promise(resolve => setTimeout(resolve, ms));
+		}
+	</script>
 </body>
 </html>
