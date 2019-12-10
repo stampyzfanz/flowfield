@@ -4,6 +4,8 @@ class Particle {
 		this.vel = createVector(0, 0);
 		this.acc = createVector(0, 0);
 		this.maxspeed = 3;
+
+		this.maxForce = 0.2;
 	}
 
 	update() {
@@ -70,5 +72,99 @@ class Particle {
 		// console.log(index);
 
 		this.applyForce(force);
+	}
+
+
+
+	// FLOCKING
+	align(flock) {
+		let perceptionRadius = 50;
+
+		let total = 0;
+		// average of velocities
+		let steering = createVector();
+		for (let other of flock) {
+			// if other isnt me and is close to me
+			if (other !== this && this.pos.dist(other.pos) < perceptionRadius) {
+				steering.add(other.vel);
+				total++;
+			}
+		}
+
+		if (total > 0) {
+			steering.div(total);
+			// debugger;
+			steering.setMag(this.maxspeed);
+			steering.sub(this.vel);
+			steering.limit(this.maxForce);
+		}
+		return steering;
+	}
+
+	cohesion(flock) {
+		let perceptionRadius = 50;
+
+		let total = 0;
+		// average of positions
+		let steering = createVector();
+		for (let other of flock) {
+			// if other isnt me and is close to me
+			if (other !== this && this.pos.dist(other.pos) < perceptionRadius) {
+				steering.add(other.pos);
+				total++;
+			}
+		}
+
+		if (total > 0) {
+			steering.div(total);
+			steering.sub(this.pos);
+			steering.setMag(this.maxspeed);
+			steering.sub(this.vel);
+			steering.limit(this.maxForce);
+		}
+		return steering;
+	}
+
+	separation(flock) {
+		let perceptionRadius = 50;
+		let total = 0;
+
+		// average of positions
+		let steering = createVector();
+		for (let other of flock) {
+			let d = this.pos.dist(other.pos);
+			// if other isnt me and is close to me
+			if (other !== this && d < perceptionRadius) {
+				let diff = p5.Vector.sub(this.pos, other.pos);
+
+				diff.div(d * d);
+				steering.add(diff);
+
+				total++;
+			}
+		}
+
+		if (total > 0) {
+			steering.div(total);
+			steering.setMag(this.maxspeed);
+			steering.sub(this.vel);
+			steering.limit(this.maxForce);
+		}
+
+		return steering;
+	}
+
+	flock(birds) {
+		let alignment = this.align(birds);
+		let cohesion = this.cohesion(birds);
+		let separation = this.separation(birds);
+
+		alignment.mult(alignSlider.value());
+		cohesion.mult(cohesionSlider.value());
+		separation.mult(separationSlider.value());
+
+		this.acc.add(alignment);
+		this.acc.add(cohesion);
+		this.acc.add(separation)
 	}
 }

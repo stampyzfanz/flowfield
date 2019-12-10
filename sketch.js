@@ -100,7 +100,14 @@ function draw() {
 		p.show();
 		p.update();
 		p.edges();
-		p.follow(flowfield);
+
+		if (isPerlinFlowing) {
+			p.follow(flowfield);
+		}
+
+		if (isFlocking) {
+			p.flock(particles);
+		}
 	}
 }
 

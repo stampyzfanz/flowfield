@@ -1,6 +1,11 @@
 let chooseSetting;
 let perlinIntensity = 0.1;
 let isPainting = false;
+let isFlocking = false;
+let isPerlinFlowing = true;
+
+let separationSlider, cohesionSlider, alignSlider;
+
 let modes = {
 	'reveal picture': 'pictureFn',
 	'reveal perlin noise colours': 'perlin',
@@ -18,6 +23,7 @@ function createDom() {
 		if (doPush) {
 			args.push(br);
 		}
+		return br;
 	}
 
 	function space(doPush) {
@@ -33,6 +39,7 @@ function createDom() {
 		if (doPush) {
 			argsExplain.push(p);
 		}
+		return p;
 	}
 
 	functions.pictureFn = function() {
@@ -122,6 +129,53 @@ function createDom() {
 		reset();
 	});
 	br();
+
+	let perlinFlowCheckbox = createCheckbox(
+			'Perlin noise flow field forces on particles', true)
+		.changed(() => {
+			isPerlinFlowing = perlinFlowCheckbox.checked();
+			// if (flockingCheckbox.value()) {
+			// 	flockingDiv.show();
+			// } else {
+			// 	flockingDiv.hide();
+			// }
+		});
+
+	let flockingCheckbox = createCheckbox(
+			'Flocking simulation forces on particles', false)
+		.changed(() => {
+			// .isChecked maybe
+			isFlocking = flockingCheckbox.checked();
+			if (isFlocking) {
+				flockingDiv.show();
+			} else {
+				flockingDiv.hide();
+			}
+		});
+
+	let flockingDiv = createDiv('').hide();
+
+	explain('Weighting of Align (same direction as neighbours)')
+		.parent(flockingDiv);
+	alignSlider = createSlider(0, 5, 1, 0.1)
+		.parent(flockingDiv);
+	br()
+		.parent(flockingDiv);
+
+	explain('Weighting of Cohesion (join in flocks - attract))')
+		.parent(flockingDiv);
+	cohesionSlider = createSlider(0, 5, 1, 0.1)
+		.parent(flockingDiv);
+	br()
+		.parent(flockingDiv);
+
+
+	explain('Weighting of Seperation (don\'t ram into neigbour))')
+		.parent(flockingDiv);
+	separationSlider = createSlider(0, 5, 1, 0.1)
+		.parent(flockingDiv);
+
+
 
 
 
